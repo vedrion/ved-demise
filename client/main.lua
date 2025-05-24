@@ -1,7 +1,6 @@
 -- GitHub: https://github.com/vedrion
 -- Website: https://ved.tebex.io/
 
-local QBCore = exports['qb-core']:GetCoreObject()
 local lastdemiseTime = 0
 
 function LoadAnimDict(dict)
@@ -13,123 +12,129 @@ end
 
 function CanUsedemiseCommand()
     local playerPed = PlayerPedId()
-    local PlayerData = QBCore.Functions.GetPlayerData()
+    local playerData = Framework.GetPlayerData()
 
-    if PlayerData.metadata[Config.MetadataKeys.IsDead] then
-        QBCore.Functions.Notify(Config.Messages.Dead, Config.NotifyType.Error)
-        PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
-        return false
-    end
-
-    if PlayerData.metadata[Config.MetadataKeys.InLastStand] then
-        QBCore.Functions.Notify(Config.Messages.Unconscious, Config.NotifyType.Error)
+    if Framework.IsPlayerDeadOrInLastStand(playerData) then
+        Framework.Notify(Config.Messages.Dead, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     if IsEntityDead(playerPed) or IsPedDeadOrDying(playerPed, true) then
-        QBCore.Functions.Notify(Config.Messages.Dying, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.Dying, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     if IsPedRagdoll(playerPed) then
-        QBCore.Functions.Notify(Config.Messages.Ragdoll, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.Ragdoll, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     if GetEntityHealth(playerPed) <= Config.MinHealth then
-        QBCore.Functions.Notify(Config.Messages.LowHealth, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.LowHealth, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     if IsPedCuffed(playerPed) then
-        QBCore.Functions.Notify(Config.Messages.Cuffed, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.Cuffed, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     if IsEntityPlayingAnim(playerPed, Config.Anims.Handsup.Dict, Config.Anims.Handsup.Anim, 3) then
-        QBCore.Functions.Notify(Config.Messages.Handsup, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.Handsup, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     if IsPedInAnyVehicle(playerPed, true) then
-        QBCore.Functions.Notify(Config.Messages.InVeh, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.InVeh, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     if IsPedDoingDriveby(playerPed) then
-        QBCore.Functions.Notify(Config.Messages.Driveby, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.Driveby, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     if IsPedInParachuteFreeFall(playerPed) then
-        QBCore.Functions.Notify(Config.Messages.Para, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.Para, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     if IsPedFalling(playerPed) then
-        QBCore.Functions.Notify(Config.Messages.Falling, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.Falling, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     if IsPedSwimming(playerPed) then
-        QBCore.Functions.Notify(Config.Messages.Water, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.Water, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     if IsPedUsingAnyScenario(playerPed) then
-        QBCore.Functions.Notify(Config.Messages.Scenario, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.Scenario, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     if IsPedInCover(playerPed, true) then
-        QBCore.Functions.Notify(Config.Messages.Cover, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.Cover, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     if IsPedInMeleeCombat(playerPed) then
-        QBCore.Functions.Notify(Config.Messages.Melee, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.Melee, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     if IsPedReloading(playerPed) then
-        QBCore.Functions.Notify(Config.Messages.Reloading, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.Reloading, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     if IsPedShooting(playerPed) then
-        QBCore.Functions.Notify(Config.Messages.Shooting, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.Shooting, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     if IsPedDiving(playerPed) then
-        QBCore.Functions.Notify(Config.Messages.Diving, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.Diving, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
-    if exports['progressbar']:isDoingSomething() then
-        QBCore.Functions.Notify(Config.Messages.Busy, Config.NotifyType.Error)
+    if Framework.IsPlayerBusy() then
+        Framework.Notify(Config.Messages.Busy, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return false
     end
 
     return true
+end
+
+function DrawTimerText(timeLeft)
+    BeginTextCommandDisplayText("STRING")
+    AddTextComponentSubstringPlayerName("Time Left\n" .. timeLeft)
+    SetTextFont(4)
+    SetTextScale(0.7, 0.7)
+    SetTextColour(255, 255, 255, 180)
+    SetTextJustification(2)
+    SetTextWrap(0.0, 0.95)
+    SetTextOutline()
+    EndTextCommandDisplayText(0.95, 0.45)
 end
 
 function KillYourself()
@@ -141,7 +146,7 @@ function KillYourself()
     if hasGun and hasAmmo then
         local weaponGroup = GetWeapontypeGroup(weapon)
         if weaponGroup ~= GetHashKey('GROUP_PISTOL') then
-            QBCore.Functions.Notify(Config.Messages.NotPistol, Config.NotifyType.Error)
+            Framework.Notify(Config.Messages.NotPistol, 'Error')
             return
         end
 
@@ -151,8 +156,21 @@ function KillYourself()
         TaskPlayAnim(playerPed, Config.Anims.Thinking.Dict, Config.Anims.Thinking.Anim, 8.0, 1.0, -1, 49, 0, false, false,
             false)
 
-        QBCore.Functions.Notify(Config.Messages.ThinkCancel, Config.NotifyType.Warning, 6000)
-        exports['progressbar']:Progress({
+        Framework.Notify(Config.Messages.ThinkCancel, 'Warning', 6000)
+
+        if Config.UseOxLib then
+            CreateThread(function()
+                while lib.progressActive() do
+                    Wait(0)
+                    if IsControlJustPressed(0, 200) then -- Escape key
+                        lib.cancelProgress()
+                        break
+                    end
+                end
+            end)
+        end
+
+        Framework.StartProgressBar({
             name = "demise_countdown",
             duration = Config.ThinkDuration,
             label = Config.Messages.Thinking,
@@ -165,7 +183,7 @@ function KillYourself()
             end
 
             if not cancelled then
-                QBCore.Functions.Notify(Config.Messages.Confirm, Config.NotifyType.Warning, 10000)
+                Framework.Notify(Config.Messages.Confirm, 'Warning', 10000)
 
                 CreateThread(function()
                     local waiting = true
@@ -177,7 +195,7 @@ function KillYourself()
                             timeExpire = timeExpire - 1
                             if timeExpire <= 0 then
                                 waiting = false
-                                QBCore.Functions.Notify(Config.Messages.Expired, Config.NotifyType.Error)
+                                Framework.Notify(Config.Messages.Expired, 'Error')
                                 ClearPedTasksImmediately(playerPed)
                                 FreezeEntityPosition(playerPed, false)
                             end
@@ -189,23 +207,7 @@ function KillYourself()
                         DisableControlAction(0, 25, true)
                         DisablePlayerFiring(playerPed, true)
 
-                        DrawRect(0.92, 0.5, 0.10, 0.07, 0, 0, 0, 150)
-
-                        SetTextFont(0)
-                        SetTextScale(0.30, 0.30)
-                        SetTextColour(255, 100, 100, 255)
-                        SetTextCentre(true)
-                        SetTextEntry("STRING")
-                        AddTextComponentString("Time left: ~w~" .. timeExpire .. "s")
-                        DrawText(0.92, 0.475)
-
-                        SetTextFont(0)
-                        SetTextScale(0.25, 0.25)
-                        SetTextColour(0, 255, 0, 255)
-                        SetTextCentre(true)
-                        SetTextEntry("STRING")
-                        AddTextComponentString("~g~[E]~w~ Accept   ~y~[←--]~w~ Cancel")
-                        DrawText(0.92, 0.503)
+                        DrawTimerText(timeExpire)
 
                         if IsControlJustPressed(0, Config.Keys.Confirm) then
                             waiting = false
@@ -214,27 +216,30 @@ function KillYourself()
                             TaskPlayAnim(playerPed, Config.Anims.demise.Dict, Config.Anims.demise.Anim, 8.0, 1.0, -1, 2,
                                 0, false, false, false)
                             Wait(Config.demiseAnimWait)
+           
+                            local coords = GetEntityCoords(playerPed)
+                            TriggerServerEvent('ved-demise:playGunshotSound', coords)
                             SetPedShootsAtCoord(playerPed, 0.0, 0.0, 0.0, 0)
                             SetEntityHealth(playerPed, 0)
-                            QBCore.Functions.Notify(Config.Messages.demiseSuccess, Config.NotifyType.Primary)
+                            Framework.Notify(Config.Messages.demiseSuccess, 'Primary')
                             ShakeGameplayCam(Config.CamShake.Type, Config.CamShake.Intensity)
                             FreezeEntityPosition(playerPed, false)
                         elseif IsControlJustPressed(0, Config.Keys.Cancel) then
                             waiting = false
-                            QBCore.Functions.Notify(Config.Messages.ChooseLife, Config.NotifyType.Success)
+                            Framework.Notify(Config.Messages.ChooseLife, 'Success')
                             ClearPedTasksImmediately(playerPed)
                             FreezeEntityPosition(playerPed, false)
                         end
                     end
                 end)
             else
-                QBCore.Functions.Notify(Config.Messages.Cancelled, Config.NotifyType.Success)
+                Framework.Notify(Config.Messages.Cancelled, 'Success')
                 SetPedCanRagdoll(playerPed, true)
                 FreezeEntityPosition(playerPed, false)
             end
         end)
     else
-        QBCore.Functions.Notify(hasGun and Config.Messages.NoAmmo or Config.Messages.NoGun, Config.NotifyType.Error)
+        Framework.Notify(hasGun and Config.Messages.NoAmmo or Config.Messages.NoGun, 'Error')
     end
 end
 
@@ -245,7 +250,7 @@ RegisterCommand(Config.CommandName, function()
 
     if currentTime - lastdemiseTime < Config.Cooldown then
         local timeLeft = math.ceil(Config.Cooldown - (currentTime - lastdemiseTime))
-        QBCore.Functions.Notify(Config.Messages.Wait .. timeLeft .. Config.TimeSuffix, Config.NotifyType.Error)
+        Framework.Notify(Config.Messages.Wait .. timeLeft .. Config.TimeSuffix, 'Error')
         PlaySoundFrontend(-1, Config.Sounds.Cooldown.Name, Config.Sounds.Cooldown.Sound, true)
         return
     end
@@ -254,3 +259,8 @@ RegisterCommand(Config.CommandName, function()
 
     KillYourself()
 end, false)
+
+RegisterNetEvent('ved-demise:playGunshotSoundClient')
+AddEventHandler('ved-demise:playGunshotSoundClient', function(coords)
+    PlaySoundFromCoord(-1, "FIRING", coords.x, coords.y, coords.z, "DLC_HEIST_BIOLAB_WEAPONS", false, 50, false)
+end)
