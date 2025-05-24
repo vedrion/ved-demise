@@ -1,6 +1,13 @@
 Config = {}
 
--- The command to use to attempt demise.
+-- Framework to use: 'qbcore' or 'esx'
+-- Using QBox? Set the framework to qbcore and make sure Config.UseOxLib is enabled (set to true)
+Config.Framework = 'qbcore'
+
+-- Use ox_lib for notifications and progress bars (true/false)
+Config.UseOxLib = true
+
+-- The command to use to attempt demise
 Config.CommandName = "demise"
 
 -- The cooldown in seconds between each demise attempt
@@ -28,9 +35,10 @@ Config.Keys = {
 }
 
 -- The metadata keys to check for the player's state
-Config.MetadataKeys = {
-    IsDead = "isdead",           -- WARNING: Changing may require code adjustments elsewhere
-    InLastStand = "inlaststand", -- WARNING: Changing may require code adjustments elsewhere
+Config.MetadataKeys = { -- Used for QB-Core
+    IsDead = "isdead",
+    InLastStand = "inlaststand",
+    -- ESX-specific status checks are handled in framework.lua
 }
 
 -- The messages to display to the player
@@ -49,7 +57,7 @@ Config.Messages = {
     NotPistol = "You can only use a pistol for this.",
     Thinking = "Thinking about life choices...",
     ThinkCancel = "Press [ESC] to cancel",
-    Confirm = "Press [E] to confirm or [Backspace] to cancel.",
+    Confirm = "Press [E] to confirm or [Backspace] to cancel.", -- Make sure to replace the keys with the ones specified in Config.Keys
     Driveby = "You can't do this while in a drive-by.",
     Busy = "You are already doing something!",
     Para = "You can't do this while skydiving.",
@@ -75,6 +83,14 @@ Config.NotifyType = {
     Primary = "primary"
 }
 
+-- ox_lib notification settings (used if Config.UseOxLib = true)
+Config.OxLibNotify = {
+    Error = "error",
+    Success = "success",
+    Warning = "warning",
+    Primary = "info"
+}
+
 -- The animations to play for the demise attempt
 Config.Anims = {
     Thinking = {
@@ -85,7 +101,6 @@ Config.Anims = {
         Dict = "mp_suicide",
         Anim = "pistol"
     },
-
     Handsup = { -- Prevents using the command if the player has their hands up
         Dict = "missminuteman_1ig_2",
         Anim = "handsup_base"
@@ -99,6 +114,7 @@ Config.ControlDisables = {
     disableMouse = false,
     disableCombat = true,
 }
+
 -- The sound to play when the player is unable to do something
 Config.Sounds = {
     Cooldown = {
