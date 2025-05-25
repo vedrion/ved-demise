@@ -21,7 +21,7 @@ function Framework.IsPlayerDeadOrInLastStand(playerData)
     if Config.Framework == 'qbcore' then
         return playerData.metadata[Config.MetadataKeys.IsDead] or playerData.metadata[Config.MetadataKeys.InLastStand]
     elseif Config.Framework == 'esx' then
-        return exports['esx_ambulancejob']:isDead() or exports['esx_ambulancejob']:isInLastStand()
+       return IsEntityDead(PlayerPedId())
     end
     return false
 end
@@ -51,6 +51,7 @@ function Framework.IsPlayerBusy()
         if Config.Framework == 'qbcore' then
             return exports['progressbar']:isDoingSomething()
         elseif Config.Framework == 'esx' then
+            -- return exports['esx_progressbar']:IsProgressActive()
             return false
         end
     end
@@ -72,28 +73,32 @@ function Framework.StartProgressBar(params, callback)
             exports['progressbar']:Progress(params, callback)
         elseif Config.Framework == 'esx' then
 
-            CreateThread(function()
-                local cancelled = false
-                while exports['esx_progressbar']:IsProgressActive() do
-                    Wait(0)
-                    if IsControlJustPressed(0, 200) then -- Escape key
-                        exports['esx_progressbar']:Cancel()
-                        cancelled = true
-                        break
-                    end
-                end
-            end)
-            
-            exports['esx_progressbar']:Progressbar(params.label, params.duration, {
-                FreezePlayer = true,
-                animation = nil,
+        CreateThread(
+            function()
+                while exports["esx_progressbar"]:IsProgressActive() do
+                     Wait(0)
+                      if IsControlJustPressed(0, 200) then -- ESC key
+                         exports["esx_progressbar"]:CancelProgressbar()
+                         break
+                      end
+                 end
+             end
+            )
+        exports["esx_progressbar"]:Progressbar(
+                params.label or "Working...",
+                params.duration or 3000,
+                {
+                FreezePlayer = params.FreezePlayer or true,
+                animation = params.animation or nil,
                 onFinish = function()
-                    callback(false)
-                end,
-                onCancel = function()
-                    callback(true)
-                end
-            })
+                LoadAnimDict(Config.Anims.Thinking.Dict)
+                TaskPlayAnim(PlayerPedId(), Config.Anims.Thinking.Dict, Config.Anims.Thinking.Anim, 8.0, 1.0, -1, 49, 0, false, false, false)
+                     callback(false)
+                 end,
+                 onCancel = function()
+                      callback(true)
+                   end
+             })
         end
     end
 end
