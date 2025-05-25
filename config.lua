@@ -30,8 +30,8 @@ Config.TimeSuffix = " seconds"
 
 -- The keys to use for confirming and cancelling the demise attempt
 Config.Keys = {
-    Confirm = 38, -- [E]
-    Cancel = 202, -- [Backspace]
+    Confirm = { code = 38, name = "[E]" }, -- Confirm key
+    Cancel = { code = 73, name = "[X]" } -- Cancel key
 }
 
 -- The metadata keys to check for the player's state
@@ -57,7 +57,7 @@ Config.Messages = {
     NotPistol = "You can only use a pistol for this.",
     Thinking = "Thinking about life choices...",
     ThinkCancel = "Press [ESC] to cancel",
-    Confirm = "Press [E] to confirm or [Backspace] to cancel.", -- Make sure to replace the keys with the ones specified in Config.Keys
+    Confirm = 'Press ' .. Config.Keys.Confirm.name .. ' to confirm or ' .. Config.Keys.Cancel.name .. ' to cancel.',
     Driveby = "You can't do this while in a drive-by.",
     Busy = "You are already doing something!",
     Para = "You can't do this while skydiving.",
