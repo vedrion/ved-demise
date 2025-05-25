@@ -1,6 +1,6 @@
 # End-of-Life (Demise)
 
-An easy-to-use script for QB-Core servers in FiveM that lets players end their character's life under safe conditions using a pistol.
+An easy-to-use script for QBCore/ESX/QBox servers in FiveM that lets players end their character's life under safe conditions using a pistol.
 
 ## Preview
 
@@ -21,7 +21,33 @@ Move the downloaded folder to the `resources` directory of your FiveM server.
 - Open your `server.cfg` file, located in your server's main directory.
 - Add `ensure ved-demise` to ensure the script starts with your server.
 
+### ⚠️ Note for ESX Users
+
+If you're using the **default ESX progress bar**, you must add the following export to support progress bar state checks:
+
+Add this code to the end of **`Progress.lua`**:
+```lua
+exports("IsProgressActive", function()
+    return CurrentProgress ~= nil
+end)
+```
+If you're not using the default ESX progress bar, ensure your custom progress bar includes:
+
+- An export to check if the progress bar is active.
+
+- An export to cancel the progress bar if needed.
+
 ## Changelog
+
+**Version 1.1.0**
+
+- Added support for ESX framework.
+
+- Integrated support for Ox Lib.
+
+- Synchronized gunshot sound across players.
+
+- Updated UI for confirmation and time left display.
 
 **Version 1.0.0**
 
