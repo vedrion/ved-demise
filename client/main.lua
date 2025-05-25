@@ -1,5 +1,6 @@
--- GitHub: https://github.com/vedrion
 -- Website: https://ved.tebex.io/
+-- GitHub: https://github.com/vedrion
+-- Discord: https://discord.gg/DscAtV7r6J
 
 local lastdemiseTime = 0
 
@@ -234,11 +235,11 @@ function KillYourself()
                         DrawTimerText(timeExpire)
 
                         local confirmText = Config.Keys.Confirm and Config.Keys.Confirm.name or "[E]"
-                        local cancelText = Config.Keys.Cancel and Config.Keys.Cancel.name or "[Backspace]"
+                        local cancelText = Config.Keys.Cancel and Config.Keys.Cancel.name or "[X]"
                         DrawConfirmText(confirmText, cancelText)
 
                         local confirmKey = Config.Keys.Confirm and Config.Keys.Confirm.code or 38
-                        local cancelKey = Config.Keys.Cancel and Config.Keys.Cancel.code or 202
+                        local cancelKey = Config.Keys.Cancel and Config.Keys.Cancel.code or 73
 
                         if IsControlJustPressed(0, confirmKey) then
                             waiting = false
@@ -290,6 +291,8 @@ RegisterCommand(Config.CommandName, function()
 
     KillYourself()
 end, false)
+
+TriggerEvent('chat:addSuggestion', '/' .. Config.CommandName, 'Take your own life')
 
 RegisterNetEvent('ved-demise:playGunshotSoundClient')
 AddEventHandler('ved-demise:playGunshotSoundClient', function(coords)
