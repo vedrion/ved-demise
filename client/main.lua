@@ -137,6 +137,30 @@ function DrawTimerText(timeLeft)
     EndTextCommandDisplayText(0.95, 0.45)
 end
 
+function DrawText3D(x, y, z, text)
+    local onScreen, _x, _y = World3dToScreen2d(x, y, z)
+    if onScreen then
+        SetTextScale(0.35, 0.35)
+        SetTextFont(4)
+        SetTextProportional(1)
+        SetTextColour(255, 255, 255, 180)
+        SetTextEntry("STRING")
+        SetTextCentre(true)
+        AddTextComponentString(text)
+        DrawText(_x, _y)
+        local factor = (string.len(text)) / 370
+        DrawRect(_x, _y + 0.0125, 0.015 + factor, 0.03, 0, 0, 0, 68)
+    end
+end
+
+function DrawConfirmText(confirmText, cancelText)
+    local playerPed = PlayerPedId()
+    local boneIndex = GetPedBoneIndex(playerPed, 0x2E28)
+    local x, y, z = table.unpack(GetWorldPositionOfEntityBone(playerPed, boneIndex))
+    local text = confirmText .. ": Confirm or " .. cancelText .. ": Cancel"
+    DrawText3D(x, y, z, text)
+end
+
 function KillYourself()
     local playerPed = PlayerPedId()
     local weapon = GetSelectedPedWeapon(playerPed)
@@ -209,7 +233,14 @@ function KillYourself()
 
                         DrawTimerText(timeExpire)
 
-                        if IsControlJustPressed(0, Config.Keys.Confirm) then
+                        local confirmText = Config.Keys.Confirm and Config.Keys.Confirm.name or "[E]"
+                        local cancelText = Config.Keys.Cancel and Config.Keys.Cancel.name or "[Backspace]"
+                        DrawConfirmText(confirmText, cancelText)
+
+                        local confirmKey = Config.Keys.Confirm and Config.Keys.Confirm.code or 38
+                        local cancelKey = Config.Keys.Cancel and Config.Keys.Cancel.code or 202
+
+                        if IsControlJustPressed(0, confirmKey) then
                             waiting = false
                             ClearPedTasksImmediately(playerPed)
                             LoadAnimDict(Config.Anims.demise.Dict)
@@ -224,7 +255,7 @@ function KillYourself()
                             Framework.Notify(Config.Messages.demiseSuccess, 'Primary')
                             ShakeGameplayCam(Config.CamShake.Type, Config.CamShake.Intensity)
                             FreezeEntityPosition(playerPed, false)
-                        elseif IsControlJustPressed(0, Config.Keys.Cancel) then
+                        elseif IsControlJustPressed(0, cancelKey) then
                             waiting = false
                             Framework.Notify(Config.Messages.ChooseLife, 'Success')
                             ClearPedTasksImmediately(playerPed)
