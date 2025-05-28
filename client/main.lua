@@ -250,7 +250,7 @@ function KillYourself()
                             Wait(Config.demiseAnimWait)
            
                             local coords = GetEntityCoords(playerPed)
-                            TriggerServerEvent('ved-demise:playGunshotSound', coords)
+                            TriggerServerEvent('ved-demise:requestDemise', coords)
                             SetPedShootsAtCoord(playerPed, 0.0, 0.0, 0.0, 0)
                             SetEntityHealth(playerPed, 0)
                             Framework.Notify(Config.Messages.demiseSuccess, 'Primary')
@@ -296,5 +296,7 @@ TriggerEvent('chat:addSuggestion', '/' .. Config.CommandName, 'Take your own lif
 
 RegisterNetEvent('ved-demise:playGunshotSoundClient')
 AddEventHandler('ved-demise:playGunshotSoundClient', function(coords)
-    PlaySoundFromCoord(-1, "FIRING", coords.x, coords.y, coords.z, "DLC_HEIST_BIOLAB_WEAPONS", false, 50, false)
+    if type(coords) == "table" and coords.x and coords.y and coords.z then
+        PlaySoundFromCoord(-1, "FIRING", coords.x, coords.y, coords.z, "DLC_HEIST_BIOLAB_WEAPONS", false, 50, false)
+    end
 end)
